@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-
 import DataTable from "react-data-table-component";
 import { fetchProducts } from "../service/ProductService";
 import { fetchingProductDetail } from "../service/ProductDetailService";
-import CustomActionButtons from "./customcomponents/CustomActionButtons";
-
+import CustomActionButtons from "./custom/CustomActionButtons";
+import ModalDetail from "./modal/ModalDetail";
 
 const Product = () => {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [dataDetail, setDataDetail] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchProductsDataPage = async () => {
     try {
@@ -30,7 +30,9 @@ const Product = () => {
     try {
       const result = await fetchingProductDetail(row.idProduct);
       setDataDetail(result);
+      setIsModalOpen(true);
       console.log(result);
+      console.log(dataDetail.productName);
     } catch (error) {
       console.log(error);
     }
@@ -90,6 +92,12 @@ const Product = () => {
       <div className="btn btn-success" style={{ margin: "20px 0" }}>
         Add product
       </div>
+
+      <ModalDetail
+        visible={isModalOpen}
+        onCancelModal={() => setIsModalOpen(false)}
+        dataDetail={dataDetail}
+      />
       <DataTable
         title="Product Details"
         columns={columns}
