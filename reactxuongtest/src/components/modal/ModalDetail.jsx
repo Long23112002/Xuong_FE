@@ -1,10 +1,12 @@
 import React from "react";
-import {Button, Modal, Select} from "antd";
+import {Button, Input, Modal, Select} from "antd";
 import {Option} from "antd/es/mentions";
 
 const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
 
-
+    if (!dataDetail || !dataDetail.listBrandName || dataDetail.listBrandName.length === 0) {
+        return null;
+    }
     if (dataDetail !== null) {
         console.log(dataDetail);
     }
@@ -15,7 +17,7 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
         </Button>
     );
 
-    const labelStyle = {
+    const styleNameForm = {
         fontSize: "14px",
         fontWeight: "bold",
         marginTop: "5px",
@@ -25,6 +27,7 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
     const inputStyle = {
         width: "100%",
     };
+
 
     return (
         <>
@@ -36,11 +39,13 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
             >
                 <form>
                     <div className="form-group">
-                        <label style={labelStyle} className="form-label">
+                        <label style={styleNameForm} className="form-label">
                             Product name
                         </label>
                         <input
-                            value={dataDetail.productDetailResponse.productName}
+                            value={dataDetail.productDetailResponse
+                                ? dataDetail.productDetailResponse.productName
+                                : ""}
                             type="text"
                             className="form-control"
                             placeholder="Product name"
@@ -49,11 +54,12 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
                     </div>
 
                     <div className="form-group">
-                        <label style={labelStyle} className="form-label">
+                        <label style={styleNameForm} className="form-label">
                             Color
                         </label>
                         <input
-                            value={dataDetail.color}
+                            value={dataDetail.productDetailResponse
+                                ? dataDetail.productDetailResponse.color : ""}
                             type="text"
                             className="form-control"
                             placeholder="Color"
@@ -62,11 +68,12 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
                     </div>
 
                     <div className="form-group">
-                        <label style={labelStyle} className="form-label">
+                        <label style={styleNameForm} className="form-label">
                             Quantity
                         </label>
                         <input
-                            value={dataDetail.quantity}
+                            value={dataDetail.productDetailResponse
+                                ? dataDetail.productDetailResponse.quantity : ""}
                             type="text"
                             className="form-control"
                             placeholder="Quantity"
@@ -75,11 +82,12 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
                     </div>
 
                     <div className="form-group">
-                        <label style={labelStyle} className="form-label">
+                        <label style={styleNameForm} className="form-label">
                             Sell Price
                         </label>
                         <input
-                            value={dataDetail.sellPrice}
+                            value={dataDetail.productDetailResponse
+                                ? dataDetail.productDetailResponse.sellPrice : ""}
                             type="text"
                             className="form-control"
                             placeholder="Sell price"
@@ -88,11 +96,12 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
                     </div>
 
                     <div className="form-group">
-                        <label style={labelStyle} className="form-label">
+                        <label style={styleNameForm} className="form-label">
                             Origin price
                         </label>
                         <input
-                            value={dataDetail.originPrice}
+                            value={dataDetail.productDetailResponse
+                                ? dataDetail.productDetailResponse.originPrice : ""}
                             type="text"
                             className="form-control"
                             placeholder="Origin price"
@@ -101,24 +110,38 @@ const ModalDetail = ({visible, onCancelModal, dataDetail}) => {
                     </div>
 
                     <div className="form-group">
-                        <div style={labelStyle} className="form-label">
+                        <div style={styleNameForm} className="form-label">
                             Brand name
                         </div>
-                        <Select placeholder="Select Status" style={inputStyle} defaultValue={dataDetail.brandName}>
-                            <Option value={dataDetail.brandName}></Option>
-                            <Option value="option2">Option 2</Option>
+                        <Select placeholder="Select Status" style={inputStyle}
+                                defaultValue={dataDetail.listBrandName[0]}
+                        >
+                            {dataDetail.listBrandName?.map((brand, index) => (
+                                <Option key={index} value={brand}></Option>
+                            ))}
                         </Select>
                     </div>
 
                     <div className="form-group">
-                        <div style={labelStyle} className="form-label">
+                        <div style={styleNameForm} className="form-label">
                             SubCategory
                         </div>
                         <Select placeholder="Select Status" style={inputStyle}
-                                defaultValue={dataDetail.subCategoryName}>
-                            <Option value={dataDetail.subCategoryName}></Option>
-                            <Option value="option2">Option 2</Option>
+                                defaultValue={dataDetail.productDetailResponse
+                                    ? dataDetail.productDetailResponse.subCategoryName : ""}>
+                            <Option value={dataDetail.productDetailResponse.subCategoryName}></Option>
                         </Select>
+                    </div>
+                    <div className="form-group">
+                        <label style={styleNameForm}>Status name</label>
+                        <input
+                            value={dataDetail.productDetailResponse
+                                ? dataDetail.productDetailResponse.statusName : ""}
+                            type="text"
+                            className="form-control"
+                            placeholder="Origin price"
+                            style={inputStyle}
+                        />
                     </div>
                 </form>
             </Modal>
